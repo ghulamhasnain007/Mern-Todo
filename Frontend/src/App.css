@@ -1,0 +1,87 @@
+/* styles.css */
+
+/* styles.css */
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.navbar h1 {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.navbar ul {
+  display: flex;
+  gap: 20px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar ul li {
+  padding: 8px;
+}
+
+.navbar .logout-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.hamburger-menu {
+  display: none;
+}
+
+.drawer {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .navbar ul {
+    display: none;
+  }
+
+  .hamburger-menu {
+    display: block;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+  }
+
+  .drawer {
+    display: block;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+    padding: 16px;
+    z-index: 1000;
+  }
+
+  .drawer a {
+    display: block;
+    padding: 10px 0;
+    text-decoration: none;
+    color: #333;
+    font-size: 18px;
+  }
+}
+
+
+@media (max-width: 640px) {
+  .ant-btn {
+    width: 40px;
+    padding: 0;
+  }
+}
+
+
