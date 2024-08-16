@@ -1,5 +1,5 @@
 const express = require('express')
-const { config } = require('./config/server.config'); 
+const { config } = require('./src/config/server.config'); 
 const mongoose = require('mongoose');
 const { router : todoRoutes} = require('./routes/todo.routes')
 const { router : userRoutes} = require('./routes/user.routes')
@@ -33,3 +33,5 @@ app.use('/user', userRoutes)
 app.listen(PORT, ()=>{
     console.log(`Server is up on running PORT ${PORT}`);
 })
+
+module.exports = app;
