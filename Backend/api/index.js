@@ -1,5 +1,5 @@
 const express = require('express')
-const { config } = require('./src/config/server.config'); 
+const { config } = require('../src/config/server.config'); 
 const mongoose = require('mongoose');
 const { router : todoRoutes} = require('./routes/todo.routes')
 const { router : userRoutes} = require('./routes/user.routes')
