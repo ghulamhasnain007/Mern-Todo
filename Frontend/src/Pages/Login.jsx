@@ -17,9 +17,9 @@ const LoginPage = () => {
         email,
         password,
       });
-      console.log(response.data);
+      // console.log(response.data);
       login(response.data.data.user, response.data.data.token);
-      console.log('Navigating to /todo');
+      // console.log('Navigating to /todo');
       navigate('/todo');
     } catch (err) {
       setError(err.response?.data?.message || 'An error occurred');

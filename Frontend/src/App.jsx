@@ -51,6 +51,9 @@ import SignUpPage from './Pages/SignUp';
 import { AuthContext } from './context/AuthContext';
 import TodoLayout from './components/TodoLayout';
 import ProtectedRoute from './components/ProtectedRoute';
+import TodoItems from './Pages/TodoItems';
+import CreateTodoItems from './Pages/CreateTodoItems';
+import AuthProvider from './context/AuthContext';
 
 function App() {
   const { loading } = useContext(AuthContext);
@@ -71,9 +74,29 @@ function App() {
           <Route path="/" element={<Todos />} />
           <Route path="/todo" element={<Todos />} />
           <Route path="/create-todo" element={<CreateTodo />} />
+          <Route path="/todo-item/:todoId" element={<TodoItems />} /> {/* Updated Route */}
+          <Route path="/create-todo-items" element={<CreateTodoItems />} />
         </Route>
       </Routes>
     </Router>
+    // <Router>
+    //   <AuthProvider>
+    //     <Routes>
+    //       <Route element={<AuthLayout />}>
+    //         <Route path="/login" element={<LoginPage />} />
+    //         <Route path="/signup" element={<SignUpPage />} />
+    //       </Route>
+
+    //       <Route element={<ProtectedRoute><TodoLayout /></ProtectedRoute>}>
+    //         <Route path="/" element={<Todos />} />
+    //         <Route path="/todo" element={<Todos />} />
+    //         <Route path="/create-todo" element={<CreateTodo />} />
+    //         <Route path="/todo-item/:todoId" element={<TodoItems />} /> {/* Updated Route */}
+    //         <Route path="/create-todo-items" element={<CreateTodoItems />} />
+    //       </Route>
+    //     </Routes>
+    //   </AuthProvider>
+    // </Router>
   );
 }
 

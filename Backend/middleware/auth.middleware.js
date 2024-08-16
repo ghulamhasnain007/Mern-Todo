@@ -35,9 +35,9 @@ const authMiddleware = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, config.secretKey);
-    console.log("Decoded JWT:", decoded); // Inspect the decoded token
+    // console.log("Decoded JWT:", decoded); // Inspect the decoded token
     const user = await Users.findById(decoded._id);
-    console.log("Authenticated User:", user); // Verify if the user is being found
+    // console.log("Authenticated User:", user); // Verify if the user is being found
     if (!user) {
       throw new Error('User not found');
     }

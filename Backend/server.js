@@ -3,6 +3,7 @@ const { config } = require('./config/server.config');
 const mongoose = require('mongoose');
 const { router : todoRoutes} = require('./routes/todo.routes')
 const { router : userRoutes} = require('./routes/user.routes')
+// const { router : todoItemsRoutes} = require('./routes/todoItems.routes')
 const cors = require('cors')
 
 const app = express()
@@ -27,6 +28,7 @@ ConnectDB()
 .catch((err)=> console.log("Someting Wrong: " + err))
 
 app.use('/todo', todoRoutes)
+// app.use('/todo', todoItemsRoutes)
 app.use('/user', userRoutes)
 app.listen(PORT, ()=>{
     console.log(`Server is up on running PORT ${PORT}`);

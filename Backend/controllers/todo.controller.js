@@ -1,4 +1,6 @@
 const Todos = require("../models/todo.model")
+const TodoItems = require("../models/todoItems.model")
+const { getTodoCategoryById, createTodoCategoryItem, deleteTodoItems } = require("../services/todo.services")
 
 
 const createTodo = async(req, res)=>{
@@ -57,9 +59,93 @@ const deleteTodo = async(req, res) =>{
     }
 }
 
+const createTodoListItems = async(req, res) =>{
+    const { todoId } = req.params
+    const { title, description} = req.body
+    const response = await createTodoCategoryItem({
+        title: title,
+        description: description
+    })
+    const getTodoId = await getTodoCategoryById(todoId)
+
+    if(!getTodoId)
+    {
+        return res.status(400).json({message: "Todo Item with that Id not found"})
+    }
+    getTodoId.todoList.push(response.id)
+    await getTodoId.save()
+    return res.status(200).json({message: "Todo Item Created Successfully", data: response})
+}
+
+const getAllItems = async (req, res) =>{
+    try {
+        const { todoId } = req.params
+        const response = await Todos.findById(todoId).populate(['createdBy' , 'todoList'])
+        return res.status(200).json({message: "All Todos", data: response})   
+    }
+    catch (error) {
+        return res.status(500).json({message: "Something went wrong"})
+    }
+}
+
+const deleteTodoItem = async(req, res) =>{
+    try {
+        const { id, todoId} = req.params
+        // Step 1: Delete the todoItem from the collection
+        const response = await deleteTodoItems(id);
+
+        if (!response) {
+            return res.status(404).json({ message: 'Todo Item not found' });
+        }
+
+        // Step 2: Remove the todoItem's _id from the todoList array in the Todos document
+        await Todos.findByIdAndUpdate(todoId, {
+            $pull: { todoList: id }
+        });
+
+        return res.status(200).json({ message: 'Todo Item Deleted Successfully', data: response });
+    } catch (error) {
+        console.error('Error deleting todo item:', error);
+        return res.status(500).json({ message: 'Failed to delete todo item', error: error.message });
+    }
+}
+
+const updateTodoItem = async (req, res) => {
+    try {
+        // console.log('Request Params:', req.params); // Log the request parameters
+        // console.log('Request Body:', req.body);     // Log the request body
+
+        // Correctly extract itemId from req.params
+        const { itemId } = req.params;
+        // console.log("Id: " + itemId);
+
+        const updatedTodoItem = await TodoItems.findByIdAndUpdate(
+            itemId,
+            req.body,
+            { new: true }
+        );
+
+        if (!updatedTodoItem) {
+            return res.status(404).json({ message: "Cannot find Todo Item with that ID" });
+        }
+
+        // console.log('Updated Todo Item:', updatedTodoItem);
+        return res.status(200).json({ message: "Todo Item Updated Successfully", data: updatedTodoItem });
+    } catch (error) {
+        console.error('Error during update:', error);
+        return res.status(500).json({ message: "Failed to update Todo Item", error: error.message });
+    }
+};
+
+
+
 module.exports = {
     createTodo,
     readTodos,
     updateTodo,
-    deleteTodo
+    deleteTodo,
+    createTodoListItems,
+    getAllItems,
+    deleteTodoItem,
+    updateTodoItem
 }

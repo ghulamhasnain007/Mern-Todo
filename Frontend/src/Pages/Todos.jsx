@@ -250,11 +250,13 @@
 // export default Todos;
 
 import React, { useState, useEffect, useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
-import CreateTodo from '../Pages/CreateTodo';
 import { Button } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
+
+import { AuthContext } from '../context/AuthContext';
+import CreateTodo from '../Pages/CreateTodo';
 
 function Todos() {
   const [todos, setTodos] = useState([]);
@@ -271,7 +273,7 @@ function Todos() {
     setIsModalVisible(false);
   };
 
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem('token');
   const fetchTodo = async () => {
     try {
       const response = await axios.get('http://localhost:8000/todo/', {
@@ -296,11 +298,11 @@ function Todos() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/todo/deleteTodo/${id}`,{
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-    });
+      await axios.delete(`http://localhost:8000/todo/deleteTodo/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setTodos(todos.filter(todo => todo._id !== id));
     } catch (error) {
       console.log("Failed to delete Todo" + error);
@@ -321,12 +323,11 @@ function Todos() {
 
   const handleSave = async () => {
     try {
-      const response = await axios.put(`http://localhost:8000/todo/update-todo/${todos[editIndex]._id}`, currentTodo,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      const response = await axios.put(`http://localhost:8000/todo/update-todo/${todos[editIndex]._id}`, currentTodo, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-    });
+      });
       const updatedTodos = [...todos];
       updatedTodos[editIndex] = response.data.data;
       setTodos(updatedTodos);
@@ -348,61 +349,58 @@ function Todos() {
       <Button type="primary" onClick={showModal} className="mb-4">
         Create new Todo
       </Button>
-      <ul className="w-full max-w-2xl">
-      {todos.map((todo, index) => (
-        <li key={todo._id || index} className="block border rounded-lg p-4 mb-4 shadow-md bg-white">
-          <h1 className="text-2xl font-bold mb-2">{todo.title}</h1>
-          <p className="text-gray-600 mb-4">
-            {todo.description}
-          </p>
-          <div className="flex justify-end space-x-2">
-            <Button
-              type="primary"
-              danger
-              icon={<DeleteOutlined />}
-              onClick={() => handleDelete(todo._id)}
-            />
-            <Button
-              type="default"
-              icon={<EditOutlined />}
-              onClick={() => handleEdit(todo._id)}
-            />
-          </div>
-        </li>
-      ))}
-    </ul>
+      <ul className="w-full max-w-3xl">
+        {todos.map((todo) => (
+          <li key={todo._id} className="block border rounded-lg p-4 mb-4 shadow-md bg-white">
+            <Link to={`/todo-item/${todo._id}`}>
+              <h1 className="text-2xl font-bold mb-2">{todo.title}</h1>
+            <p className="text-gray-600 mb-4">
+              {todo.description}
+            </p>
+            </Link>
+            <div className="flex justify-end space-x-2">
+              <Button
+                type="primary"
+                danger
+                icon={<DeleteOutlined />}
+                onClick={() => handleDelete(todo._id)}
+              />
+              <Button
+                type="default"
+                icon={<EditOutlined />}
+                onClick={() => handleEdit(todo._id)}
+              />
+            </div>
+          </li>
+        ))}
+      </ul>
       {isEditing && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
-        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-          <h2 className="text-xl font-bold mb-4">Edit Todo</h2>
-          <input
-            type="text"
-            className="p-2 mb-4 w-full border rounded"
-            placeholder="Title"
-            value={currentTodo.title}
-            onChange={(e) => setCurrentTodo({ ...currentTodo, title: e.target.value })}
-          />
-          <textarea
-            className="p-2 mb-4 w-full border rounded"
-            placeholder="Description"
-            value={currentTodo.description}
-            onChange={(e) => setCurrentTodo({ ...currentTodo, description: e.target.value })}
-          />
-          <div className="flex justify-end space-x-2">
-            <Button
-              onClick={handleCancel}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="primary"
-              onClick={handleSave}
-            >
-              Save
-            </Button>
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h2 className="text-xl font-bold mb-4">Edit Todo</h2>
+            <input
+              type="text"
+              className="p-2 mb-4 w-full border rounded"
+              placeholder="Title"
+              value={currentTodo.title}
+              onChange={(e) => setCurrentTodo({ ...currentTodo, title: e.target.value })}
+            />
+            <textarea
+              className="p-2 mb-4 w-full border rounded"
+              placeholder="Description"
+              value={currentTodo.description}
+              onChange={(e) => setCurrentTodo({ ...currentTodo, description: e.target.value })}
+            />
+            <div className="flex justify-end space-x-2">
+              <Button onClick={handleCancel}>
+                Cancel
+              </Button>
+              <Button type="primary" onClick={handleSave}>
+                Save
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
       )}
       <CreateTodo visible={isModalVisible} onCancel={handleModalCancel} addTodo={addTodo} />
     </div>
