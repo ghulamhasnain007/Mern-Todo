@@ -8,12 +8,17 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const { login } = useContext(AuthContext);
+  const baseUrl = import.meta.env.VITE_BASE_URL
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/user/login', {
+      console.log('baseUrl: '+ baseUrl)
+      console.log(`fullUrl: ${baseUrl}/user/login`)
+      // const response = await axios.post('http://localhost:8000/user/login', {
+      // const response = await axios.post(`${baseUrl}/user/login`, {
+      const response = await axios.post(`${baseUrl}/user/login`, {
         email,
         password,
       });

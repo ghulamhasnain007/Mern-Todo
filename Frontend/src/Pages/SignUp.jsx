@@ -8,11 +8,13 @@ const SignUpPage = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const baseUrl = import.meta.env.VITE_BASE_URL
 
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/user/create-user', {
+      // const response = await axios.post('http://localhost:8000/user/create-user', {
+      const response = await axios.post(`${baseUrl}/user/create-user`, {
         fullName: name,
         email,
         password,

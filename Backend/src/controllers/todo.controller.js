@@ -29,9 +29,11 @@ const readTodos = async (req, res) => {
     try {
         // Fetch todos created by the currently authenticated user
         const todos = await Todos.find({ createdBy: req.user._id }).populate("createdBy", "fullName");
+        // const todos = await Todos.find({})
         return res.status(200).json(todos);
     } catch (error) {
-        return res.status(500).json({ message: "Error Fetching Todo" });
+        console.log(error)
+        return res.status(500).json({ message: "Error Fetching Todo", error: error.message });
     }
 };
 

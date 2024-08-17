@@ -8,11 +8,13 @@ export default function CreateTodo({ visible, onCancel, addTodo }) {
   const [title, setTitle] = useState('');
   const { user } = useContext(AuthContext);
   const token = localStorage.getItem('token')
-
+  const baseUrl = import.meta.env.VITE_BASE_URL
+  
   const handleCreate = async () => {
     try {
       if (title && description) {
-        const response = await axios.post('http://localhost:8000/todo/create-todo', {
+        // const response = await axios.post('http://localhost:8000/todo/create-todo', {
+        const response = await axios.post(`${baseUrl}/todo/create-todo`, {
           title,
           description,
           createdBy: user._id

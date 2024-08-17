@@ -14,6 +14,7 @@ function TodoItems() {
   const [isEditing, setIsEditing] = useState(false);
   const { user } = useContext(AuthContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const baseUrl = import.meta.env.VITE_BASE_URL
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -25,7 +26,7 @@ function TodoItems() {
   const token = localStorage.getItem('token');
   const fetchTodo = async () => {
     try {
-        const response = await axios.get(`http://localhost:8000/todo/list-item/${todoId}/`, {
+        const response = await axios.get(`${baseUrl}/todo/list-item/${todoId}/`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -75,7 +76,8 @@ const addTodo = (newTodo) => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/todo/list-item/${todoId}/delete/${id}`,{
+      // await axios.delete(`http://localhost:8000/todo/list-item/${todoId}/delete/${id}`,{
+      await axios.delete(`${baseUrl}/todo/list-item/${todoId}/delete/${id}`,{
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -100,7 +102,8 @@ const addTodo = (newTodo) => {
 
   const handleSave = async () => {
     try {
-      const response = await axios.put(`http://localhost:8000/todo/list-item/${todoId}/update/${todos[editIndex]._id}`, currentTodo,
+      // const response = await axios.put(`http://localhost:8000/todo/list-item/${todoId}/update/${todos[editIndex]._id}`, currentTodo,
+      const response = await axios.put(`${baseUrl}/todo/list-item/${todoId}/update/${todos[editIndex]._id}`, currentTodo,
         {
           headers: {
             Authorization: `Bearer ${token}`,
