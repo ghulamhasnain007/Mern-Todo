@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose');
 const { config } = require('../src/config/server.config'); 
+const { corsConfig } = require('../src/config/cors.config')
 const { router : todoRoutes} = require('../src/routes/todo.routes')
 const { router : userRoutes} = require('../src/routes/user.routes')
 // const { router : todoItemsRoutes} = require('./routes/todoItems.routes')
@@ -10,7 +11,7 @@ const app = express()
 const PORT = config.PORT
 
 app.use(express.json());
-app.use(cors())
+app.use(cors(corsConfig))
 
 async function ConnectDB(){
     try{
